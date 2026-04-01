@@ -12,7 +12,7 @@
 
 ### Descrição
 
-Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, manipulação e transformação de Árvores e Grafos. Além disso, o projeto inclui a geração de novas Árvores e Grafos a partir de expressões de compreensão.
+Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, manipulação e transformação de Árvores e Grafos. Para isso, o projeto inclui a geração de Grafos a partir de expressões de compreensão e adiciona alguns operadores essenciais para valores do tipo Árvore ou Grafo.
 
 ### Elementos Adicionados
 
@@ -27,11 +27,24 @@ Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, m
     - **Grafos**:
        - _nos_
        - _arestas_
-- **Expressões de Compreensão**:
-    - _compreensaoArvore_: para gerar novas árvores a partir de expressões de compreensão.
+- **Expressão de Compreensão**:
     - _compreensaoGrafo_: para gerar novos grafos a partir de expressões de compreensão.
 
 ## Exemplos de Código
+
+```
+// Árvore com raiz com valor 5 e um nó filho à esquerda com valor 1
+let var x = 2, var y = 3 in avbin x + y / avbin y - x \ null
+
+// Grafo com nós de 1 a 4, com as arestas listadas
+gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3>
+
+// Grafo com nós de 1 a 10 em que cada nó de 1 a 5 se conecta com os nós correspondentes ao seu sucessor e dobro númerico
+<x -> x + 1> | <x -> 2 * x> for x in 1 .. 5
+
+// Grafo com nós de 1 a 8 em que cada nó de 1 a 5 se conecta com cada nó de 6 a 8 e vice-versa
+<x -> y> | <y -> x> for x, y in 1 .. 5, 6 .. 8
+```
 
 ## Gramática
 
@@ -50,19 +63,26 @@ Valor ::= ValorConcreto
        | ValorAbstrato
 
 ValorAbstrato ::= ValorFuncao
+       <b>| ValorArvore</b>
+       <b>| ValorGrafo</b>
 
 ValorConcreto ::= ValorInteiro
        | ValorBooleano
        | ValorString
        | ValorLista
-       <b>| ValorArvore</b>
-       <b>| ValorGrafo</b>
+       <b>| ValorVazio</b>
 
-<b>ValorArvore ::= "arvore(" Expressao "," Expressao "," Expressao ")" -- valor, esquerda, direita
-        | "folha(" Expressao ")" -- valor
-        | "arvoreVazia"</b>
+<b>ValorVazio ::= "null"</b>
 
-<b>ValorGrafo ::= "grafo(" Expressao ")" -- lista de adjacencia (lista de [valor, [indicesDeNosAdjacentes]])</b>
+<b>ValorArvore ::= "avbin" Expressao / ValorArvore \ ValorArvore -- valor, esquerda, direita
+        | ValorVazio</b>
+
+<b>ValorGrafo ::= "gf" ListaAdjacencia</b>
+
+<b>ListaAdjacencia ::= Adjacencia
+        | Adjacencia "|" ListaAdjacencia</b>
+
+<b>Adjacencia ::= "<" Expressao "->" Expressao ">"</b>
 
 ValorFuncao ::= "fn" Id Id "." Expressao
 
@@ -77,20 +97,20 @@ ExpUnaria ::= "-" Expressao
        <b>| nodes(Expressao)</b>
        <b>| edges(Expressao)</b>
        | ExpCompreensaoLista
-       <b>| ExpCompreensaoArvore</b>
        <b>| ExpCompreensaoGrafo</b>
 
-ExpCompreensaoLista ::= Expressao Gerador
-       | Expressao Gerador Filtro
+ExpCompreensaoLista ::= Expressao GeradorLista
+       | Expressao GeradorLista Filtro
 
-<b>ExpCompreensaoArvore ::=</b>
+<b>ExpCompreensaoGrafo ::= ListaAdjacencia GeradorGrafo</b>
 
-<b>ExpCompreensaoGrafo ::=</b>
-
-Gerador ::= "for" Id "in" Expressao
-       | "for" Id "in" Expressao ["," Gerador]
+GeradorLista ::= "for" Id "in" Expressao
+       | "for" Id "in" Expressao ["," GeradorLista]
 
 Filtro ::= "if" Expressao
+
+<b>GeradorGrafo ::= GeradorLista
+        | "for" Id "," Id "in" Expressao "," Expressao</b>
 
 ExpBinaria ::= Expressao "+" Expressao
        | Expressao "-" Expressao
