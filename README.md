@@ -34,16 +34,7 @@ Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, m
 
 ```
 // Árvore com raiz com valor 5 e um nó filho à esquerda com valor 1
-let var x = 2, var y = 3 in avbin x + y / avbin y - x \ null
-
-// Grafo com nós de 1 a 4, com as arestas listadas
-gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3>
-
-// Grafo com nós de 1 a 10 em que cada nó de 1 a 5 se conecta com os nós correspondentes ao seu sucessor e dobro númerico
-<x -> x + 1> | <x -> 2 * x> for x in 1 .. 5
-
-// Grafo com nós de 1 a 8 em que cada nó de 1 a 5 se conecta com cada nó de 6 a 8 e vice-versa
-<x -> y> | <y -> x> for x, y in 1 .. 5, 6 .. 8
+let var x = 2, var y = 3 in avbin [x + y, avbin [y - x, null, null], null]
 ```
 
 ## Gramática
@@ -64,25 +55,16 @@ Valor ::= ValorConcreto
 
 ValorAbstrato ::= ValorFuncao
        <b>| ValorArvore</b>
-       <b>| ValorGrafo</b>
 
 ValorConcreto ::= ValorInteiro
        | ValorBooleano
        | ValorString
        | ValorLista
-       <b>| ValorVazio</b>
 
-<b>ValorVazio ::= "null"</b>
+ValorArvore ::= "avbin" "[" Expressao "," Expressao "," Expressao "]"
+       | ArvoreVazia
 
-<b>ValorArvore ::= "avbin" Expressao / ValorArvore \ ValorArvore -- valor, esquerda, direita
-        | ValorVazio</b>
-
-<b>ValorGrafo ::= "gf" ListaAdjacencia</b>
-
-<b>ListaAdjacencia ::= Adjacencia
-        | Adjacencia "|" ListaAdjacencia</b>
-
-<b>Adjacencia ::= "<" Expressao "->" Expressao ">"</b>
+ArvoreVazia ::= "null"
 
 ValorFuncao ::= "fn" Id Id "." Expressao
 
@@ -91,26 +73,17 @@ ExpUnaria ::= "-" Expressao
        | "length" Expressao
        | head(Expressao)
        | tail(Expressao)
-       <b>| root(Expressao)</b>
-       <b>| left(Expressao)</b>
-       <b>| right(Expressao)</b>
-       <b>| nodes(Expressao)</b>
-       <b>| edges(Expressao)</b>
+       <b>| "root" Expressao</b>
+       <b>| "left" Expressao</b>
+       <b>| "right" Expressao</b>
        | ExpCompreensaoLista
-       <b>| ExpCompreensaoGrafo</b>
 
-ExpCompreensaoLista ::= Expressao GeradorLista
-       | Expressao GeradorLista Filtro
-
-<b>ExpCompreensaoGrafo ::= ListaAdjacencia GeradorGrafo</b>
+ExpCompreensaoLista ::= "[" Expressao GeradorLista [Filtro] "]"
 
 GeradorLista ::= "for" Id "in" Expressao
        | "for" Id "in" Expressao ["," GeradorLista]
 
 Filtro ::= "if" Expressao
-
-<b>GeradorGrafo ::= GeradorLista
-        | "for" Id "," Id "in" Expressao "," Expressao</b>
 
 ExpBinaria ::= Expressao "+" Expressao
        | Expressao "-" Expressao
