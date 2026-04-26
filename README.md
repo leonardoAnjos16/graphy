@@ -86,14 +86,14 @@ let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in edges G
 - _adjacency_: dado o identificador de um nó **u**, retorna uma lista contendo todos os nós **v** tal que existe uma aresta de **u** para **v**
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in adjacency G 2
+let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in adjacency G[2]
 // Retorna [3, 4], os nós com os quais o nó 2 se conecta diretamente em G
 ```
 
 - _reach_: dado o identificador de um nó **u**, retorna uma lista contendo todos os nós **v** tal que existe um caminho de **u** para **v**
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in reach G 1
+let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in reach G[1]
 // Retorna [1, 2, 3, 4], os nós alcançáveis a partir do nó 1 em G
 ```
 
@@ -158,8 +158,8 @@ ExpUnaria ::= "-" Expressao
        <b>| "right" Expressao</b>
        <b>| "nodes" Expressao</b>
        <b>| "edges" Expressao</b>
-       <b>| "adjacency" Expressao</b>
-       <b>| "reach" Expressao</b>
+       <b>| "adjacency" Expressao "[" Expressao "]"</b>
+       <b>| "reach" Expressao "[" Expressao "]"</b>
        | ExpCompreensaoLista
        <b>| ExpCompreensaoGrafo</b>
 
