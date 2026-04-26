@@ -76,11 +76,11 @@ let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in nodes G
 // Retorna 4, o número de nós em G
 ```
 
-- _edges_: retorna uma lista contendo todas as aretas do grafo
+- _edges_: retorna o número de arestas do grafo
 
 ```
 let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in edges G
-// Retorna [<1 -> 2>, <2 -> 3>, <2 -> 4>, <3 -> 4>, <4 -> 3>], as arestas de G
+// Retorna 5, o número de arestas de G
 ```
 
 - _adjacency_: dado o identificador de um nó **u**, retorna uma lista contendo todos os nós **v** tal que existe uma aresta de **u** para **v**
