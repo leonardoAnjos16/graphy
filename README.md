@@ -12,7 +12,7 @@
 
 ### Descrição
 
-Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, manipulação e transformação de Árvores e Grafos. Para isso, o projeto inclui a geração de Grafos a partir de expressões de compreensão e adiciona alguns operadores essenciais para valores do tipo Árvore ou Grafo.
+Este projeto busca estender a Linguagem Funcional 3 para suportar a criação, manipulação e transformação de Árvores e Grafos. Para isso, o projeto inclui a geração de Árvores binárias e Grafos a partir de expressões de compreensão e adiciona alguns operadores essenciais para valores do tipo Árvore ou Grafo.
 
 ### Elementos Adicionados
 
@@ -99,6 +99,16 @@ let G = gf { <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> } in reach G[1
 
 #### Expressões de Compreensão
 
+Para facilitar a geração automática de árvores binárias, a linguagem irá suportar a criação de uma árvore binária a partir de expressões de compreensão:
+
+```
+// Árvore binária completa com 7 nós, preenchida em ordem por nível
+let var T = avbin [x | for x in 1 .. 7] in T
+
+// Árvore binária completa com transformação aplicada em cada valor gerado
+let var T = avbin [2 * x + 1 | for x in 0 .. 6] in T
+```
+
 Para facilitar a geração automática de grafos, a linguagem também irá suportar a criação de um grafo a partir de expressões de compreensão:
 
 ```
@@ -161,9 +171,12 @@ ExpUnaria ::= "-" Expressao
        <b>| "adjacency" Expressao "[" Expressao "]"</b>
        <b>| "reach" Expressao "[" Expressao "]"</b>
        | ExpCompreensaoLista
+       <b>| ExpCompreensaoArvore</b>
        <b>| ExpCompreensaoGrafo</b>
 
 ExpCompreensaoLista ::= "[" Expressao GeradorLista [Filtro] "]"
+
+<b>ExpCompreensaoArvore ::= "avbin" "[" Expressao "|" GeradorLista [Filtro] "]"</b>
 
 <b>ExpCompreensaoGrafo ::= "[" ListaAdjacencia GeradorGrafo "]"</b>
 
