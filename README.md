@@ -113,10 +113,10 @@ Para facilitar a geração automática de grafos, a linguagem também irá supor
 
 ```
 // Grafo com nós de 1 a 10 em que cada nó de 1 a 5 se conecta com os nós correspondentes ao seu sucessor e dobro númerico
-let var G = [<x -> x + 1> | <x -> 2 * x> for x in 1 .. 5] in G
+let var G = gf [<x -> x + 1> | <x -> 2 * x> for x in 1 .. 5] in G
 
 // Grafo com nós de 1 a 8 em que cada nó de 1 a 5 se conecta com cada nó de 6 a 8 e vice-versa
-let var G = [<x -> y> | <y -> x> for x, y in 1 .. 5, 6 .. 8] in G
+let var G = gf [<x -> y> | <y -> x> for x, y in 1 .. 5, 6 .. 8] in G
 ```
 
 ## Gramática
@@ -178,7 +178,7 @@ ExpCompreensaoLista ::= "[" Expressao GeradorLista [Filtro] "]"
 
 <b>ExpCompreensaoArvore ::= "avbin" "[" Expressao "|" GeradorLista [Filtro] "]"</b>
 
-<b>ExpCompreensaoGrafo ::= "[" ListaAdjacencia GeradorGrafo "]"</b>
+<b>ExpCompreensaoGrafo ::= "gf" "[" ListaAdjacencia GeradorGrafo [Filtro] "]"</b>
 
 GeradorLista ::= "for" Id "in" Expressao
        | "for" Id "in" Expressao ["," GeradorLista]
