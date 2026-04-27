@@ -34,7 +34,7 @@ let var x = 2, var y = 3 in avbin [x + y, avbin [y - x, null, null], null]
 // 2 -> 4
 // 3 -> 4
 // 4 -> 3
-let var x = 2, var y = 3 in gf <y - x -> x> | <x -> y> | <x -> 2 * x> | <y -> 2 * x> | <2 * x -> y>
+let var x = 2, var y = 3 in gf { <y - x -> x> | <x -> y> | <x -> 2 * x> | <y -> 2 * x> | <2 * x -> y> }
 ```
 
 #### Operações
@@ -72,28 +72,28 @@ De forma semelhante, serão adicionadas as seguintes operações em grafos:
 - _nodes_: retorna o número de nós do grafo
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in nodes G
+let G = gf { <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> } in nodes G
 // Retorna 4, o número de nós em G
 ```
 
 - _edges_: retorna o número de arestas do grafo
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in edges G
+let G = gf { <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> } in edges G
 // Retorna 5, o número de arestas de G
 ```
 
 - _adjacency_: dado o identificador de um nó **u**, retorna uma lista contendo todos os nós **v** tal que existe uma aresta de **u** para **v**
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in adjacency G[2]
+let G = gf { <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> } in adjacency G[2]
 // Retorna [3, 4], os nós com os quais o nó 2 se conecta diretamente em G
 ```
 
 - _reach_: dado o identificador de um nó **u**, retorna uma lista contendo todos os nós **v** tal que existe um caminho de **u** para **v**
 
 ```
-let G = gf <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> in reach G[1]
+let G = gf { <1 -> 2> | <2 -> 3> | <2 -> 4> | <3 -> 4> | <4 -> 3> } in reach G[1]
 // Retorna [1, 2, 3, 4], os nós alcançáveis a partir do nó 1 em G
 ```
 
@@ -139,7 +139,7 @@ ValorConcreto ::= ValorInteiro
 
 <b>ArvoreVazia ::= "null"</b>
 
-<b>ValorGrafo ::= "gf" ListaAdjacencia</b>
+<b>ValorGrafo ::= "gf" "{" ListaAdjacencia "}"</b>
 
 <b>ListaAdjacencia ::= Adjacencia
        | Adjacencia "|" ListaAdjacencia</b>
